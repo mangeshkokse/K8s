@@ -227,6 +227,11 @@ spec:
 
 In short, the Pod template acts as a blueprint for the ReplicaSet to create and manage pods with consistent configurations.
 
+# Q. What Happens When a ReplicaSet's 'replicas' Field is Set to a Value Less than the Current Number of Pods?
+
+When a ReplicaSet's **`replicas`** field is set to a value less than the current number of running pods, Kubernetes will scale down the ReplicaSet by terminating the excess pods until the desired number of replicas is reached. The ReplicaSet controller ensures that only the specified number of pods remains active, deleting the extra ones to match the new `replicas` value.
+
+In brief, Kubernetes reduces the number of pods by deleting the extras to align with the updated replica count.
 
 
  
