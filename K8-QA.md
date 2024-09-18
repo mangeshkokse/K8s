@@ -37,3 +37,11 @@ The smallest deployable unit, containing one or more containers.
 ---
 
 Kubernetes uses this architecture to manage containerized applications across a distributed environment.
+
+# 3 How are Kubernetes and Docker Linked?
+
+- **Docker** is a platform for building, packaging, and running containers. It helps developers create isolated environments for applications using container images.
+- **Kubernetes** is an orchestration platform that automates the deployment, scaling, and management of these containers across multiple machines (nodes).
+
+In essence, Docker creates and runs containers, while Kubernetes manages and coordinates them across clusters, ensuring high availability and scalability. Kubernetes can work with Docker as the container runtime, though it also supports other runtimes like containerd.
+
