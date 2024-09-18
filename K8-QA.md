@@ -71,3 +71,21 @@ If you are running a Kubernetes cluster and want to use CRI-O as your container 
 
 This helps in reducing resource overhead and streamlining the container management process for Kubernetes environments.
 
+# Q. What is CSI?
+
+**CSI (Container Storage Interface)** is a standard interface that allows container orchestration systems like Kubernetes to interact with various storage providers. It provides a way for Kubernetes to dynamically provision, attach, mount, and manage storage volumes for containerized applications without being tied to a specific storage solution.
+
+## Key Features:
+- Allows the use of different storage solutions (block or file storage) in Kubernetes.
+- Standardizes how storage providers are integrated with Kubernetes.
+
+## Examples of CSI Drivers:
+1. **Amazon EBS CSI Driver**: Provides support for Amazon Elastic Block Store (EBS) volumes in Kubernetes.
+2. **Azure Disk CSI Driver**: Allows Kubernetes to manage Azure Disk storage.
+3. **Google Persistent Disk CSI Driver**: Supports the use of Google Cloud Persistent Disks in Kubernetes.
+4. **Ceph-CSI**: Integrates Ceph storage systems with Kubernetes for block and file storage.
+5. **NFS CSI Driver**: Enables the use of Network File System (NFS) as persistent storage for Kubernetes.
+
+These CSI drivers allow Kubernetes to manage storage across different cloud and on-premises environments.
+
+
