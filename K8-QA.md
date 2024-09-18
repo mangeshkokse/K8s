@@ -38,6 +38,17 @@ The smallest deployable unit, containing one or more containers.
 
 Kubernetes uses this architecture to manage containerized applications across a distributed environment.
 
+# Q. What is a Namespace in Kubernetes?
+
+A **Namespace** in Kubernetes is a way to divide cluster resources between multiple users or applications. It provides a mechanism to create virtual clusters within a physical cluster, allowing for better organization and isolation of resources like pods, services, and deployments.
+
+## Key Points:
+- **Isolation**: Namespaces provide resource isolation, meaning objects in one namespace don’t interfere with those in another.
+- **Organization**: Helps organize different environments (e.g., dev, staging, production) within the same cluster.
+- **Resource Limits**: You can apply resource quotas and limits at the namespace level.
+
+In brief, a Namespace helps manage and isolate resources within a Kubernetes cluster.
+
 # Q. How are Kubernetes and Docker Linked?
 
 - **Docker** is a platform for building, packaging, and running containers. It helps developers create isolated environments for applications using container images.
@@ -316,6 +327,19 @@ spec:
         ports:
         - containerPort: 80
 ```
+
+# Q. What is a DaemonSet in Kubernetes?
+
+A **DaemonSet** in Kubernetes ensures that a copy of a specific pod is running on all (or selected) nodes in the cluster. It is typically used for running background system services like log collectors, monitoring agents, or networking services that need to operate on every node.
+
+## Key Points:
+- **Purpose**: Ensures that one pod runs on each node.
+- **Common Use Cases**: Running system-level services like log collection, monitoring, or network services.
+- **Node-Specific**: You can specify certain nodes for DaemonSets to run on, instead of all nodes.
+
+In brief, a DaemonSet ensures essential services run on all or specific nodes in a Kubernetes cluster.
+
+
  
 
 
