@@ -233,6 +233,14 @@ When a ReplicaSet's **`replicas`** field is set to a value less than the current
 
 In brief, Kubernetes reduces the number of pods by deleting the extras to align with the updated replica count.
 
+# Q. What Happens If We Delete a ReplicaSet?
+
+If you delete a **ReplicaSet**, the pods managed by that ReplicaSet will also be deleted, since the ReplicaSet is responsible for ensuring that a specific number of pods are running. Once the ReplicaSet is removed, there is no controller to manage those pods, so Kubernetes will terminate them.
+
+However, if the pods were created by a **Deployment**, the ReplicaSet can be recreated by the Deployment, and new pods will be managed again.
+
+In brief, deleting a ReplicaSet will typically delete its managed pods unless another higher-level controller (like a Deployment) is managing it.
+
 
  
 
