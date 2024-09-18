@@ -289,7 +289,14 @@ Each component ensures that the request is efficiently routed to the right pod f
 
 In this flow, the **Deployment** ensures application management, while the **Service** ensures access to running Pods.
 
+# Q. How to Update the Pod Template for an Existing ReplicaSet?
 
+To update the **Pod template** for an existing **ReplicaSet**, you can't directly modify the ReplicaSet itself because Kubernetes does not allow updates to a Pod template in an active ReplicaSet. Instead, you would:
+
+1. **Create a New ReplicaSet**: Modify the Pod template in a new ReplicaSet and apply it.
+2. **Use a Deployment**: If the ReplicaSet is managed by a Deployment, you can update the Pod template in the Deployment, and it will automatically update the ReplicaSet and roll out the new pods.
+
+In simple terms, either create a new ReplicaSet with the updated Pod template, or if using a Deployment, modify the Deployment, and it will handle the update process.
 
  
 
