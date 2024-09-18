@@ -88,4 +88,44 @@ This helps in reducing resource overhead and streamlining the container manageme
 
 These CSI drivers allow Kubernetes to manage storage across different cloud and on-premises environments.
 
+# Q. What is a ReplicaSet in Kubernetes?
+
+A **ReplicaSet** in Kubernetes ensures that a specified number of pod replicas are running at any given time. It monitors the state of pods and ensures that the desired number is maintained. If a pod fails or is deleted, the ReplicaSet automatically creates a new one to replace it.
+
+## Problem Solved:
+A ReplicaSet solves the problem of ensuring application availability by maintaining the required number of running pods. This makes applications resilient to node failures or pod crashes, as Kubernetes can quickly recover the desired state.
+
+## Example YAML File:
+
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-replicaset
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-container
+        image: nginx
+        ports:
+        - containerPort: 80
+```
+This ReplicaSet ensures that 3 instances of nginx are running at all times.
+
+## Explanation:
+1. **replicas**: Specifies that 3 pods should always be running.
+2. **selector**: Defines how to match pods (based on labels) for management.
+3. **template**: Describes the pod template that is used to create new pods, including the container (e.g., nginx).
+
+
+
+
 
