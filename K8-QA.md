@@ -267,6 +267,28 @@ In brief, deleting a ReplicaSet will typically delete its managed pods unless an
 
 Each component ensures that the request is efficiently routed to the right pod for processing within the Kubernetes cluster.
 
+# Q. Sequence: Deployment, ReplicaSet, Pod, Service
+
+## 1. Deployment
+- Manages the desired state of your application, including updates, scaling, and rollback. It creates and oversees ReplicaSets.
+
+## 2. ReplicaSet
+- Ensures the specified number of Pods are running at any time. It maintains the desired number of replicas and is automatically created by a Deployment.
+
+## 3. Pod
+- The smallest deployable unit in Kubernetes. A Pod runs your application (in one or more containers). The ReplicaSet creates and monitors Pods.
+
+## 4. Service
+- Exposes Pods to the network, providing a stable endpoint for external/internal traffic and load-balancing requests to the Pods.
+
+## Flow Summary:
+1. **Deployment** → 
+2. **ReplicaSet** → 
+3. **Pod** → 
+4. **Service**
+
+In this flow, the **Deployment** ensures application management, while the **Service** ensures access to running Pods.
+
 
 
  
