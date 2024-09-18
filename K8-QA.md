@@ -1,5 +1,5 @@
 
-# 1. What is Kubernetes?
+# Q. What is Kubernetes?
 
 Kubernetes is an open-source platform for automating the deployment, scaling, and management of containerized applications. It helps in managing clusters of containers across multiple hosts, ensuring that your applications run efficiently and remain available.
 
@@ -16,7 +16,7 @@ Kubernetes is an open-source platform for automating the deployment, scaling, an
 
 Kubernetes is a powerful tool for managing modern, distributed applications.
 
-# 2. Explain Kubernetes Architecture
+# Q. Explain Kubernetes Architecture
 
 Kubernetes has a master-worker architecture, consisting of the following key components:
 
@@ -38,12 +38,12 @@ The smallest deployable unit, containing one or more containers.
 
 Kubernetes uses this architecture to manage containerized applications across a distributed environment.
 
-# 3. How are Kubernetes and Docker Linked?
+# Q. How are Kubernetes and Docker Linked?
 
 - **Docker** is a platform for building, packaging, and running containers. It helps developers create isolated environments for applications using container images.
 - **Kubernetes** is an orchestration platform that automates the deployment, scaling, and management of these containers across multiple machines (nodes).
 
-# 4. Docker Engine in Kubernetes
+# Q. Docker Engine in Kubernetes
 
 In Kubernetes, **Docker Engine** is a container runtime used to build, run, and manage containers. It is responsible for pulling container images, starting containers, and handling their execution lifecycle.
 
@@ -57,7 +57,7 @@ In short, Docker Engine runs containers, and Kubernetes coordinates their manage
 
 In essence, Docker creates and runs containers, while Kubernetes manages and coordinates them across clusters, ensuring high availability and scalability. Kubernetes can work with Docker as the container runtime, though it also supports other runtimes like containerd.
 
-# 5. What is CRI-O?
+# Q. What is CRI-O?
 
 **CRI-O** is a lightweight, open-source container runtime specifically designed to be used with Kubernetes. It implements the **Container Runtime Interface (CRI)** created by Kubernetes, which allows it to manage containers without needing Docker.
 
