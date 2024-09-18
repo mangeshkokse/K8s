@@ -57,3 +57,17 @@ In short, Docker Engine runs containers, and Kubernetes coordinates their manage
 
 In essence, Docker creates and runs containers, while Kubernetes manages and coordinates them across clusters, ensuring high availability and scalability. Kubernetes can work with Docker as the container runtime, though it also supports other runtimes like containerd.
 
+# 5. What is CRI-O?
+
+**CRI-O** is a lightweight, open-source container runtime specifically designed to be used with Kubernetes. It implements the **Container Runtime Interface (CRI)** created by Kubernetes, which allows it to manage containers without needing Docker.
+
+## Key Points:
+- CRI-O is an alternative to Docker for running containers in Kubernetes.
+- It uses **containerd** and **OCI-compliant images** to run containers efficiently.
+- It is designed to be simpler and lighter than Docker, with fewer features, focusing on just what Kubernetes needs.
+
+## Example:
+If you are running a Kubernetes cluster and want to use CRI-O as your container runtime, you would install CRI-O on each node instead of Docker, and Kubernetes will interact with CRI-O to run and manage containers.
+
+This helps in reducing resource overhead and streamlining the container management process for Kubernetes environments.
+
