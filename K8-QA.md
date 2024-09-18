@@ -169,7 +169,7 @@ spec:
 ## Explanation:
 1. **selector**: The ReplicaSet looks for pods with the label `app: my-app`.
 2. **matchLabels**: his tells the ReplicaSet to manage only the pods with the label **app: my-app**.`app: my-app`.
-3. **template**: If there aren't enough matching pods, the ReplicaSet will use this template to create new ones with the label **app: my-app`app: my-app`.
+3. **template**: If there aren't enough matching pods, the ReplicaSet will use this template to create new ones with the label `app: my-app`.
 
 # Q How to Scale the Number of Replicas Managed by a ReplicaSet
 
