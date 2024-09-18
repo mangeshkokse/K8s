@@ -43,5 +43,17 @@ Kubernetes uses this architecture to manage containerized applications across a 
 - **Docker** is a platform for building, packaging, and running containers. It helps developers create isolated environments for applications using container images.
 - **Kubernetes** is an orchestration platform that automates the deployment, scaling, and management of these containers across multiple machines (nodes).
 
+# 4. Docker Engine in Kubernetes
+
+In Kubernetes, **Docker Engine** is a container runtime used to build, run, and manage containers. It is responsible for pulling container images, starting containers, and handling their execution lifecycle.
+
+While Kubernetes manages the orchestration of containers across nodes (clusters), Docker Engine works at the node level to execute the containers that Kubernetes schedules. Docker Engine was one of the most commonly used container runtimes in Kubernetes, though Kubernetes also supports other runtimes like **containerd** and **CRI-O**.
+
+In short, Docker Engine runs containers, and Kubernetes coordinates their management across multiple nodes.
+
+  
+
+  
+
 In essence, Docker creates and runs containers, while Kubernetes manages and coordinates them across clusters, ensuring high availability and scalability. Kubernetes can work with Docker as the container runtime, though it also supports other runtimes like containerd.
 
