@@ -795,3 +795,39 @@ spec:
 **Explanation:**
 - Traffic to `app1.myapp.com` is routed to `service1`.
 - Traffic to `app2.myapp.com` is routed to `service2`.
+
+# Q. Kubernetes Network Policy
+
+A **Kubernetes Network Policy** is a way to control and restrict **network traffic** between pods within a cluster. It defines rules that specify which pods are allowed to communicate with each other and with external endpoints, providing fine-grained network security.
+
+### Key Points:
+- **Controls traffic**: Allows or denies traffic to/from pods based on defined rules.
+- **Supports both ingress and egress**: Controls incoming (ingress) and outgoing (egress) traffic.
+- **Pod-level security**: Ensures that only authorized pods can communicate with each other or external services.
+
+### Example Network Policy:
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-app1
+spec:
+  podSelector:
+    matchLabels:
+      app: app1
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: app2
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: app2
+```
+- **Explanation:** This policy allows pods with the label `app: app1` to only communicate with pods labeled `app: app2`.
+**In brief:** Network Policies control network traffic between pods, ensuring secure communication by allowing or denying traffic based on defined rules.
