@@ -727,3 +727,71 @@ A **Kubernetes Ingress** is an API object that manages external access to servic
 - Manages external access: Routes external traffic to services inside the cluster.
 - Supports HTTP/HTTPS: Typically used for web traffic.
 - Flexible routing: Can route traffic based on paths or hostnames (e.g., /app1 to service1, /app2 to service2).
+
+**In Kubernetes Ingress, routing can be configured either by path-based or host-based (URL-based) rules to direct traffic to different services.**
+1. **Path-Based Routing:**
+   Path-based routing directs traffic based on the URL path. Different services can be exposed based on specific paths in the URL.
+   **Example of Path-Based Routing:**
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: path-based-ingress
+spec:
+  rules:
+  - host: "myapp.com"
+    http:
+      paths:
+      - path: /app1
+        pathType: Prefix
+        backend:
+          service:
+            name: service1
+            port:
+              number: 80
+      - path: /app2
+        pathType: Prefix
+        backend:
+          service:
+            name: service2
+            port:
+              number: 80
+```
+**Explanation**
+- Traffic to `myapp.com/app1` is routed to `service1`.
+- Traffic to `myapp.com/app2` is routed to `service2`.
+
+2. **Host-Based (URL-Based) Routing:**
+   Host-based routing (or URL-based routing) directs traffic based on the hostname in the URL, allowing different services to be accessed via different subdomains or domains.
+  **Example of Host-Based Routing:**
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: host-based-ingress
+spec:
+  rules:
+  - host: "app1.myapp.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service1
+            port:
+              number: 80
+  - host: "app2.myapp.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service2
+            port:
+              number: 80
+```
+**Explanation:**
+- Traffic to `app1.myapp.com` is routed to `service1`.
+- Traffic to `app2.myapp.com` is routed to `service2`.
