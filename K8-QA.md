@@ -453,3 +453,50 @@ spec:
 ```
 ## Explanation:
 - **nodeName: my-node-name:** This is where you manually specify the node where you want the pod to run (replace my-node-name with your actual node's name).
+
+# Q. Taints and Tolerations in Kubernetes
+
+Taints and tolerations are mechanisms that **control which pods can be scheduled on which nodes**.
+
+- **Taints**: Applied to nodes to **prevent** certain pods from being scheduled on them unless those pods explicitly tolerate the taint.
+- **Tolerations**: Applied to pods to **allow** them to be scheduled on nodes with matching taints.
+
+## How it Works:
+- **Nodes** with taints repel all pods unless a **pod** has a matching toleration.
+- This ensures that only specific pods can run on certain nodes, allowing for better control of resource allocation and workload isolation.
+
+## Taint Syntax:
+```bash
+kubectl taint nodes <node-name> key=value:effect
+```
+**key=value:** The key-value pair for the taint.
+**effect:** The taint effect, which can be:
+**NoSchedule:** Pods that don’t tolerate the taint won’t be scheduled on the node.
+**PreferNoSchedule:** Kubernetes tries to avoid scheduling pods that don’t tolerate the taint.
+**NoExecute:** Evicts already running pods that don’t tolerate the taint.
+## Toleration Syntax:
+In the pod YAML, a toleration can be specified to allow the pod to be scheduled on a node with a matching taint.
+
+## Example:
+**1. Apply a Taint to a Node:**
+```bash
+kubectl taint nodes <node-name> key=example:NoSchedule
+```
+This adds a taint to the node. Any pod that doesn't have a corresponding toleration will not be scheduled on this node.
+**2. Pod with Toleration:**
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  tolerations:
+  - key: "key"
+    operator: "Equal"
+    value: "example"
+    effect: "NoSchedule"
+  containers:
+  - name: nginx
+    image: nginx
+```
+-**Toleration:** The pod has a toleration that matches the taint key=example:NoSchedule, which allows it to be scheduled on the node with that taint.
