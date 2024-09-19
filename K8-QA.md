@@ -928,9 +928,13 @@ spec:
 ### 5. **Storage Class**:
 A **StorageClass** defines the **type of storage** (e.g., SSD, HDD) and the **provisioner** (e.g., AWS EBS, GCE PD) for dynamically provisioning Persistent Volumes. It allows you to specify the kind of storage you want for your PVCs.
 ```bash
-$ kubectl get storageclass
-NAME            PROVISIONER             AGE
-fast-storage    kubernetes.io/aws-ebs   5s
+$kubectl get storageclass
+NAME                 PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+efs-reclaim-delete   efs.csi.aws.com         Delete          Immediate              true                   133d
+efs-reclaim-retain   efs.csi.aws.com         Retain          Immediate              true                   133d
+efs-sc               efs.csi.aws.com         Delete          Immediate              true                   133d
+expandable-storage   kubernetes.io/aws-ebs   Delete          WaitForFirstConsumer   true                   133d
+gp2 (default)        kubernetes.io/aws-ebs   Delete          WaitForFirstConsumer   false                  138d
 ```
 
 ### Example Workflow:
