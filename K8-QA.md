@@ -582,3 +582,35 @@ Copy or move the YAML file to the directory where the kubelet looks for static p
 **3. Kubelet starts the pod:**
 The kubelet automatically detects and runs the static pod.
 
+# Q. Kubernetes Multiple Schedulers
+
+In Kubernetes, you can run **multiple schedulers** alongside the default scheduler. Each scheduler can have its own logic and policies for assigning pods to nodes. This is useful when you want different scheduling behavior for specific workloads.
+
+### Key Steps to Using Multiple Schedulers:
+
+1. **Create a custom scheduler**:  
+   You can either modify an existing scheduler or build a new one based on your needs.
+
+2. **Run the custom scheduler**:  
+   Deploy the new scheduler as a pod in the cluster.
+
+3. **Assign pods to a specific scheduler**:  
+   In your pod definition, specify which scheduler to use by adding the `schedulerName` field.
+
+   Example:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  schedulerName: my-custom-scheduler
+  containers:
+  - name: my-container
+    image: nginx
+```
+**In short:** You can run multiple schedulers in Kubernetes by creating a custom scheduler, deploying it, and specifying which pods it should schedule using the 'schedulerName' field.
+
+
+
