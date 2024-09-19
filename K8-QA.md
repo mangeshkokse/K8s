@@ -430,3 +430,26 @@ spec:
 
 In this example, instead of creating a single IP for my-headless-service, Kubernetes will return the IPs of all the Pods that match the label app: my-app. This allows clients to interact with the Pods directly.
 
+# Q. Manual Scheduling in Kubernetes
+
+Manual Scheduling in Kubernetes allows you to specify which node should run a particular pod, rather than relying on the Kubernetes scheduler. You can do this using the `nodeName` field in your pod's YAML file.
+
+## Key Points:
+- **Manual Scheduling** bypasses the Kubernetes scheduler.
+- **`nodeName`** field is used to assign a pod to a specific node.
+
+## Example YAML for Manual Scheduling:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: manual-scheduled-pod
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+  nodeName: my-node-name
+```
+## Explanation:
+- **nodeName: my-node-name:** This is where you manually specify the node where you want the pod to run (replace my-node-name with your actual node's name).
