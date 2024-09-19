@@ -501,3 +501,16 @@ spec:
     image: nginx
 ```
 - **Toleration:** The pod has a toleration that matches the taint key=example:NoSchedule, which allows it to be scheduled on the node with that taint.
+
+# Q. Difference Between Manual Scheduling and Taint & Toleration in Kubernetes
+
+- **Manual Scheduling**:  
+  This is when you **manually assign** a pod to a specific node. You specify the node's name in the pod's configuration, and Kubernetes places the pod there. It's like telling Kubernetes, "Put this pod exactly on that node."
+
+- **Taints and Tolerations**:  
+  These allow nodes to **repel certain pods** unless those pods are "tolerant" of the taint. Taints are set on nodes to mark them as **off-limits** to most pods, and tolerations are applied to pods to **allow them** to run on those specific tainted nodes.
+
+### In Short:  
+- **Manual scheduling** directly assigns pods to nodes.
+- **Taints and Tolerations** control which pods are allowed on certain nodes, but the pods are still scheduled by Kubernetes.
+
