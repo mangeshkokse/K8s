@@ -514,3 +514,38 @@ spec:
 - **Manual scheduling** directly assigns pods to nodes.
 - **Taints and Tolerations** control which pods are allowed on certain nodes, but the pods are still scheduled by Kubernetes.
 
+# Q. What is a DaemonSet?
+
+A **DaemonSet** in Kubernetes ensures that a **specific pod runs on every node** in the cluster (or on a subset of nodes if specified). It's commonly used for **system-level services** like logging agents, monitoring, or network plugins, which need to be present on all nodes.
+
+### In Short:
+A DaemonSet makes sure that a pod is automatically deployed on all (or selected) nodes.
+
+# Q. How to Create a DaemonSet in Kubernetes
+
+To create a DaemonSet in Kubernetes, follow these steps:
+
+1. **Write a DaemonSet YAML file**:  
+   Create a YAML file that defines the DaemonSet, specifying the pods you want to run on each node.
+
+   Example `daemonset.yaml`:
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: example-daemonset
+spec:
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      containers:
+      - name: example-container
+        image: nginx
+```
+**2. Apply the YAML file:** Use the kubectl apply command to create the DaemonSet in your Kubernetes cluster:
