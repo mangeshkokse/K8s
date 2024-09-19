@@ -483,6 +483,7 @@ In the pod YAML, a toleration can be specified to allow the pod to be scheduled 
 kubectl taint nodes <node-name> key=example:NoSchedule
 ```
 This adds a taint to the node. Any pod that doesn't have a corresponding toleration will not be scheduled on this node.
+
 **2. Pod with Toleration:**
 ```yaml
 apiVersion: v1
