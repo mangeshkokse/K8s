@@ -339,10 +339,40 @@ A **DaemonSet** in Kubernetes ensures that a copy of a specific pod is running o
 
 In brief, a DaemonSet ensures essential services run on all or specific nodes in a Kubernetes cluster.
 
+# Q. What is Kubernetes Resource Quota?
 
- 
+A **Kubernetes Resource Quota** is a way to limit the amount of resources (like CPU, memory, and storage) that a specific namespace can use. It ensures fair resource allocation within a cluster, preventing any single namespace from over-consuming resources and impacting other applications.
+
+## Key Points:
+- Controls CPU, memory, and object limits (e.g., number of Pods or Services).
+- Helps manage resources in multi-tenant environments.
+- Ensures fair usage of cluster resources.
+
+In short, a Resource Quota helps control and limit resource usage within a namespace in Kubernetes.
 
 
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-resources
+  namespace: my-namespace
+spec:
+  hard:
+    requests.cpu: "4"        # Maximum total CPU requested by all pods
+    requests.memory: "8Gi"   # Maximum total memory requested by all pods
+    limits.cpu: "8"          # Maximum total CPU limit for all pods
+    limits.memory: "16Gi"    # Maximum total memory limit for all pods
+    pods: "10"               # Maximum number of pods in the namespace
+
+```
+
+## Explanation:
+- **requests.cpu:** Limits the total amount of CPU that can be requested by all pods in the namespace.
+- **requests.memory:** Limits the total amount of memory that can be requested by all pods.
+- **limits.cpu:** Sets the maximum CPU that all pods can use.
+- **limits.memory:* Sets the maximum memory that all pods can use.
+- **pods:** Limits the total number of pods that can be created in the namespace.
 
 
 
