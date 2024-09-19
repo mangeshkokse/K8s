@@ -371,8 +371,32 @@ spec:
 - **requests.cpu:** Limits the total amount of CPU that can be requested by all pods in the namespace.
 - **requests.memory:** Limits the total amount of memory that can be requested by all pods.
 - **limits.cpu:** Sets the maximum CPU that all pods can use.
-- **limits.memory:* Sets the maximum memory that all pods can use.
+- **limits.memory:** Sets the maximum memory that all pods can use.
 - **pods:** Limits the total number of pods that can be created in the namespace.
+
+# Q. What is a Kubernetes Service?
+
+A **Kubernetes Service** is an abstraction that defines a logical set of Pods and provides a stable endpoint (IP address or DNS name) to access them. Services allow communication between different components within a Kubernetes cluster or between external clients and the cluster.
+
+## Types of Kubernetes Services:
+
+### 1. ClusterIP (Default)
+- Exposes the service only within the cluster.
+- Pods can communicate with each other via the service’s internal cluster IP.
+
+### 2. NodePort
+- Exposes the service on a static port on each node’s IP.
+- External traffic can reach the service by accessing the `<NodeIP>:<NodePort>`.
+
+### 3. LoadBalancer
+- Exposes the service externally using a cloud provider’s load balancer (e.g., AWS, GCP).
+- Automatically provisions a load balancer and routes external traffic to the service.
+
+### 4. ExternalName
+- Maps the service to an external DNS name.
+- It does not route traffic internally but redirects it to the external address.
+
+In brief, a Kubernetes Service ensures that Pods can be accessed reliably, even if the underlying Pods are replaced or rescheduled, and offers different ways to expose services depending on the need.
 
 
 
