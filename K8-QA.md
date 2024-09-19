@@ -708,4 +708,22 @@ spec:
 ```
 **In brief:** ConfigMap stores configuration data and injects it into pods as environment variables or files, keeping app config separate from code.
 
+# Q. What is a Kubernetes Secret?
 
+A **Kubernetes Secret** is used to store and manage **sensitive information** such as passwords, tokens, and keys. Unlike ConfigMaps, Secrets are encoded and handled more securely to prevent exposing sensitive data in plain text.
+
+### Key Points:
+- **Stores sensitive data**: Used for passwords, API keys, or certificates.
+- **More secure**: Data is base64-encoded and stored securely in the cluster.
+- **Injected into Pods**: Can be injected as environment variables or mounted as files.
+
+### In Brief:
+**Kubernetes Secrets** securely store and manage sensitive information, keeping it separate from your application code.
+
+# Q. What is a Ingress?
+
+A **Kubernetes Ingress** is an API object that manages external access to services within a Kubernetes cluster, typically HTTP and HTTPS. It provides a way to route traffic from outside the cluster to services inside based on URL paths or hostnames.
+## Key Points: 
+- Manages external access: Routes external traffic to services inside the cluster.
+- Supports HTTP/HTTPS: Typically used for web traffic.
+- Flexible routing: Can route traffic based on paths or hostnames (e.g., /app1 to service1, /app2 to service2).
