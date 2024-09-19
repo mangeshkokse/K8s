@@ -549,3 +549,36 @@ spec:
         image: nginx
 ```
 **2. Apply the YAML file:** Use the kubectl apply command to create the DaemonSet in your Kubernetes cluster:
+
+# Q. What is a Static Pod?
+
+A **Static Pod** in Kubernetes is a pod that is **managed directly by the kubelet** on a specific node, rather than by the Kubernetes API server. Static pods are defined by placing their pod definitions in a specific directory on the node, and they are created and monitored by the kubelet. These pods are tied to the lifecycle of the node and do not show up in `kubectl` commands, but their status can be viewed.
+
+### In Brief:
+A static pod is a pod managed directly by the kubelet, not by the Kubernetes control plane.
+
+# Q. How to Create a Static Pod in Kubernetes
+
+To create a static pod in Kubernetes, follow these steps:
+
+1. **Define the static pod**:  
+   Create a pod definition file in YAML format (e.g., `mypod.yaml`).
+
+   Example:
+
+ ```yaml
+ apiVersion: v1
+kind: Pod
+metadata:
+  name: my-static-pod
+spec:
+  containers:
+  - name: my-container
+    image: nginx  
+ ```
+**2. Place the file in the kubelet's static pod directory:**
+Copy or move the YAML file to the directory where the kubelet looks for static pod configurations, typically /etc/kubernetes/manifests/.
+
+**3. Kubelet starts the pod:**
+The kubelet automatically detects and runs the static pod.
+
