@@ -610,7 +610,67 @@ spec:
   - name: my-container
     image: nginx
 ```
-**In short:** You can run multiple schedulers in Kubernetes by creating a custom scheduler, deploying it, and specifying which pods it should schedule using the 'schedulerName' field.
+**In short:** You can run multiple schedulers in Kubernetes by creating a custom scheduler, deploying it, and specifying which pods it should schedule using the `schedulerName` field.
+
+# Q. Rollback Kubernetes Deployment
+
+In Kubernetes, you can **rollback a deployment** to a previous version if something goes wrong with a new deployment. Kubernetes keeps a history of previous versions, making it easy to revert.
+
+### Steps to Rollback a Deployment:
+
+1. **Check Deployment History**:  
+   Use this command to see the revision history of the deployment:
+```bash
+kubectl rollout history deployment/<deployment-name>
+```
+2. **Rollback to a Previous Revision:**
+   To rollback to a previous version, use:
+```bash
+kubectl rollout undo deployment/<deployment-name>
+```
+3. **Rollback to a Specific Revision:**
+ If you want to rollback to a specific revision, specify the revision number:
+```bash
+kubectl rollout undo deployment/<deployment-name> --to-revision=<revision-number>
+```
+In brief: Use `kubectl rollout undo` to rollback a deployment to a previous or specific revision.
 
 
+# Q. Production-Level Rollback in GitLab CI/CD
+
+For a **production-level rollback** in GitLab CI/CD, you need to automate the process to ensure quick recovery in case of a failed deployment.
+
+### Steps for Production-Level Rollback:
+
+1. **Monitor Deployment**:  
+   Include health checks or monitoring logic in your deployment job to detect failures.
+
+2. **Rollback on Failure**:  
+   Use `when: on_failure` in a separate rollback job to automatically trigger a rollback if the deployment fails.
+
+3. **Use Stable Revision**:  
+   Rollback to the last known good revision using `kubectl rollout undo`.
+
+### Example `.gitlab-ci.yml`:
+
+```yaml
+stages:
+  - deploy
+  - rollback
+
+deploy_job:
+  stage: deploy
+  script:
+    - kubectl apply -f deployment.yaml
+    - kubectl rollout status deployment/<deployment-name>
+  allow_failure: true
+
+rollback_job:
+  stage: rollback
+  script:
+    - kubectl rollout undo deployment/<deployment-name>
+  when: on_failure
+```
+**In Brief:**
+Automate rollback by monitoring the deployment and triggering kubectl rollout undo on failure using when: on_failure in GitLab CI/CD.
 
