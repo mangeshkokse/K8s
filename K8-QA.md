@@ -672,5 +672,40 @@ rollback_job:
   when: on_failure
 ```
 **In Brief:**
-Automate rollback by monitoring the deployment and triggering kubectl rollout undo on failure using when: on_failure in GitLab CI/CD.
+Automate rollback by monitoring the deployment and triggering kubectl rollout undo on failure using `when: on_failure` in GitLab CI/CD.
+
+# Q. What is ConfigMap in Kubernetes?
+
+A **ConfigMap** in Kubernetes is used to **store configuration data** in key-value pairs. It allows you to separate configuration details from application code, making your applications more flexible and easier to manage.
+
+### Key Points:
+- **Stores configuration**: ConfigMaps hold environment variables, command-line arguments, or configuration files.
+- **Injected into Pods**: You can inject the data from a ConfigMap into pods as environment variables, command-line arguments, or mounted files.
+
+### Example ConfigMap YAML:
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data:
+  APP_ENV: production
+  LOG_LEVEL: info
+```
+### Using ConfigMap in a Pod:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: nginx
+      envFrom:
+        - configMapRef:
+            name: my-config
+```
+**In brief:** ConfigMap stores configuration data and injects it into pods as environment variables or files, keeping app config separate from code.
+
 
