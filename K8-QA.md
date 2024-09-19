@@ -499,4 +499,4 @@ spec:
   - name: nginx
     image: nginx
 ```
--**Toleration:** The pod has a toleration that matches the taint key=example:NoSchedule, which allows it to be scheduled on the node with that taint.
+- **Toleration:** The pod has a toleration that matches the taint key=example:NoSchedule, which allows it to be scheduled on the node with that taint.
