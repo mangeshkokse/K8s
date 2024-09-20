@@ -1022,3 +1022,12 @@ In essence, Operators help manage complex applications in a more consistent and 
 
 5. **Persistent Storage for Logs**: Use persistent volumes or object storage (e.g., S3, GCS) for long-term log retention.
 
+# Q. Ingress Default Backend in Kubernetes
+
+In Kubernetes, the **Ingress default backend** is a service that handles all requests that don't match any of the defined Ingress rules. If a request is made to the cluster that doesn't correspond to any specific host or path in your Ingress configuration, it is routed to the default backend.
+
+- **Default Backend**: Handles unmatched requests (e.g., no host/path match).
+- **Common Use**: Often serves error pages like "404 Not Found."
+
+This ensures that unmatched traffic doesn't get lost and provides a response to the client.
+
