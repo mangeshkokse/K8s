@@ -1009,4 +1009,16 @@ In essence, Operators help manage complex applications in a more consistent and 
 
 7. **Image Security**: Use trusted, up-to-date container images, scan them for vulnerabilities, and sign images using a system like Notary.
 
-  
+
+# Q. How to Get Central Logs in Kubernetes
+
+1. **Use a Logging Agent**: Deploy a logging agent like **Fluentd**, **Filebeat**, or **Logstash** as a DaemonSet to collect logs from all nodes and pods.
+
+2. **Centralized Logging Stack**: Set up a logging stack like **ELK (Elasticsearch, Logstash, Kibana)** or **EFK (Elasticsearch, Fluentd, Kibana)** to aggregate, process, and visualize logs.
+
+3. **Cloud-based Logging**: Integrate with cloud logging solutions like **AWS CloudWatch**, **Google Cloud Logging**, or **Azure Monitor** to centrally manage logs.
+
+4. **Use Sidecar Containers**: Deploy a sidecar container in each pod to capture and forward logs to a centralized system.
+
+5. **Persistent Storage for Logs**: Use persistent volumes or object storage (e.g., S3, GCS) for long-term log retention.
+
