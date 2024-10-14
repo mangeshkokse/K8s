@@ -1189,3 +1189,8 @@ def get_secret():
 - Secrets Manager IAM Policy: Create an IAM policy allowing your pods to access specific secrets.
 - Service Account with IAM Role: Create a service account in Kubernetes that is associated with the IAM role.
 - Application Access: Use the AWS SDK within your application to fetch secrets from Secrets Manager.
+
+# Q. Suppose you have a database that needs to be deployed on Kubernetes, and it needs to be highly available. How would you achieve that? 
+To deploy a highly available (HA) database on Kubernetes, you need to ensure redundancy, failover capability, and data replication, so that the database remains operational even in the event of node or pod failures. Below is a step-by-step approach to achieve high availability for a database in Kubernetes:
+
+### 1. **Use StatefulSets for Database Deployment**
