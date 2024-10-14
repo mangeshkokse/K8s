@@ -1094,3 +1094,98 @@ The best practice for allowing EKS pods to access AWS services, such as Secrets 
 **Step-by-Step Process**:
 - **Step 1**: Enable OIDC Provider for Your EKS Cluster
 First, ensure that your EKS cluster has an OIDC provider enabled, which is necessary for associating Kubernetes service accounts with IAM roles.
+```bash
+# Get the OIDC provider URL for your cluster
+aws eks describe-cluster --name <your-cluster-name> --query "cluster.identity.oidc.issuer" --output text
+
+# Create the OIDC identity provider if not already done
+eksctl utils associate-iam-oidc-provider --cluster <your-cluster-name> --approve
+```
+- **Step 2**: Create an IAM Policy for Secrets Manager Access
+You need to create an IAM policy that grants access to Secrets Manager for your application. This policy will be attached to the IAM role that your pod will assume.
+```bash
+aws iam create-policy --policy-name EKSSecretsManagerPolicy --policy-document '{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:GetSecretValue"
+            ],
+            "Resource": [
+                "arn:aws:secretsmanager:<region>:<account-id>:secret:<your-secret-name>"
+            ]
+        }
+    ]
+}'
+```
+- **Step 3**: Create an IAM Role and Associate it with a Service Account
+Create an IAM role that allows access to the Secrets Manager using the policy you created, and associate it with a Kubernetes service account. Pods using this service account will assume this role.
+```bash
+eksctl create iamserviceaccount \
+  --name my-app-sa \
+  --namespace default \
+  --cluster <your-cluster-name> \
+  --attach-policy-arn arn:aws:iam::<account-id>:policy/EKSSecretsManagerPolicy \
+  --approve \
+  --override-existing-serviceaccounts
+```
+This command creates a Kubernetes service account `my-app-sa` in the `default` namespace, attaches the `EKSSecretsManagerPolicy`, and associates it with the IAM 
+role.
+- **Step 4**: Deploy the Application with the Service Account
+Update your application deployment to use the service account you just created. Modify your Kubernetes Deployment YAML file to include the service account name.
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      serviceAccountName: my-app-sa
+      containers:
+      - name: my-app
+        image: <your-application-image>
+        env:
+        - name: SECRET_VALUE
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secret
+              key: secret-key
+```
+- **Step 5**: Access the Secret from the Application
+In your application code, use the AWS SDK to access the secret from Secrets Manager. Here's an example of Python code to retrieve a secret:
+```python 
+import boto3
+import os
+
+def get_secret():
+    secret_name = os.getenv("SECRET_NAME")
+    region_name = os.getenv("AWS_REGION")
+
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    get_secret_value_response = client.get_secret_value(
+        SecretId=secret_name
+    )
+
+    return get_secret_value_response['SecretString']
+```
+### Summary
+- IAM Role for Service Account (IRSA): Leverage IRSA to securely access Secrets Manager from your EKS pods.
+- Secrets Manager IAM Policy: Create an IAM policy allowing your pods to access specific secrets.
+- Service Account with IAM Role: Create a service account in Kubernetes that is associated with the IAM role.
+- Application Access: Use the AWS SDK within your application to fetch secrets from Secrets Manager.
