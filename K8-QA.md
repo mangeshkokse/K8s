@@ -1083,3 +1083,14 @@ spec:
 ```
 3. **Ingress Controller**: Ensure that an Ingress Controller (e.g., NGINX, Traefik) is deployed to process the Ingress rules and provide external access.
     By doing this, traffic from the Ingress routes to the service, which forwards it to the appropriate port on the pod.
+
+# Q. Suppose you have an application deployed inside EKS, and your application needs some secrets to run. These secrets are stored in the Secrets Manager service in AWS. How will you provision this so that your application can access those secrets and configurations?
+
+To provision your application deployed inside Amazon EKS to access secrets from AWS Secrets Manager, you can follow these steps:
+1. **IAM Role for Service Account (IRSA) Setup**
+The best practice for allowing EKS pods to access AWS services, such as Secrets Manager, is to use IAM Role for Service Account (IRSA). This avoids the need to inject AWS credentials directly into your pods and instead leverages fine-grained IAM roles associated with Kubernetes service accounts.
+
+### Note - An `OIDC Provider` (OP) is a server that authenticates users and issues identity tokens in an OpenID Connect `(OIDC)` flow, enabling secure user identity verification for client applications. It builds on OAuth 2.0 to facilitate `Single Sign-On` (SSO) and secure access across multiple services.
+**Step-by-Step Process**:
+- **Step 1**: Enable OIDC Provider for Your EKS Cluster
+First, ensure that your EKS cluster has an OIDC provider enabled, which is necessary for associating Kubernetes service accounts with IAM roles.
