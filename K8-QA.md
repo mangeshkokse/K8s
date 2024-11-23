@@ -40,7 +40,7 @@ Kubernetes uses this architecture to manage containerized applications across a 
 
 # Q. What is a Namespace in Kubernetes?
 
-A **Namespace** in Kubernetes is a way to divide cluster resources between multiple users or applications. It provides a mechanism to create virtual clusters within a physical cluster, allowing for better organization and isolation of resources like pods, services, and deployments.
+A **Namespace** in Kubernetes is a way to divide cluster resources between multiple users or applications (Sub-clusters). It provides a mechanism to create virtual clusters within a physical cluster, allowing for better organization and isolation of resources like pods, services, and deployments.
 
 ## Key Points:
 - **Isolation**: Namespaces provide resource isolation, meaning objects in one namespace don’t interfere with those in another.
