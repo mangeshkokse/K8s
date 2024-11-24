@@ -455,8 +455,12 @@ spec:
 - **nodeName: my-node-name:** This is where you manually specify the node where you want the pod to run (replace my-node-name with your actual node's name).
 
 # Q. Taints and Tolerations in Kubernetes
-
 Taints and tolerations are mechanisms that **control which pods can be scheduled on which nodes**.
+## Why Use Taints and Tolerations?
+-**Sometimes you want to:**
+- Reserve certain nodes for specific workloads (e.g., GPU nodes for AI/ML tasks).
+- Prevent non-critical Pods from running on critical nodes.
+- Isolate workloads based on their resource or security requirements.
 
 - **Taints**: Applied to nodes to **prevent** certain pods from being scheduled on them unless those pods explicitly tolerate the taint.
 - **Tolerations**: Applied to pods to **allow** them to be scheduled on nodes with matching taints.
