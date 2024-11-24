@@ -822,6 +822,7 @@ spec:
 
 # Q. Why we Using a ConfigMap to store configuration data in Kubernetes instead of embedding it directly in a Deployment manifest.
 Using a ConfigMap to store configuration data in Kubernetes instead of embedding it directly in a Deployment manifest provides several practical and operational advantages. 
+
 **Here’s why ConfigMaps are preferred**:
 1. Separation of Concerns
 - **ConfigMap**: Handles configuration data.
