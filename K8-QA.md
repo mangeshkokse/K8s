@@ -2,6 +2,9 @@
 # Q. What is Kubernetes?
 
 Kubernetes is an open-source platform for automating the deployment, scaling, and management of containerized applications. It helps in managing clusters of containers across multiple hosts, ensuring that your applications run efficiently and remain available.
+eg. The condition is that I have two pods, and Pod-1 will be up and running before Pod-2 starts.
+- we can tell the pod on which sheduler it can work
+- We can specify which scheduler a pod should use to operate.
 
 ## Key Advantages of Kubernetes:
 
