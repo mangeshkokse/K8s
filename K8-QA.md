@@ -612,8 +612,9 @@ The kubelet automatically detects and runs the static pod.
 
 # Q. Kubernetes Multiple Schedulers (custom scheduler).
 
-In Kubernetes, you can run **multiple schedulers** alongside the default scheduler. Each scheduler can have its own logic and policies for assigning pods to nodes. This is useful when you want different scheduling behavior for specific workloads.
-eg. The condition is that I have two pods, and Pod-1 will be up and running before Pod-2 starts.
+- In Kubernetes, you can run **multiple schedulers** alongside the default scheduler. Each scheduler can have its own logic and policies for assigning pods to nodes. This is useful when you want different scheduling behavior for specific workloads.
+
+eg. The condition is that I have two pods, and `Pod-1` will be up and running before `Pod-2` starts.
 - we can tell the pod on which sheduler it can work
 - We can specify which scheduler a pod should use to operate.
 
