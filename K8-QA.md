@@ -513,10 +513,17 @@ spec:
 
 - **Manual Scheduling**:  
   This is when you **manually assign** a pod to a specific node. You specify the node's name in the pod's configuration, and Kubernetes places the pod there. It's like telling Kubernetes, "Put this pod exactly on that node."
+  - Pods are tied to a specific Node.
+  - Pods remain stuck on the assigned Node.
+  - Temporary one-off placement for testing/debugging.
+  - Manual intervention needed if the Node fails.
 
 - **Taints and Tolerations**:  
   These allow nodes to **repel certain pods** unless those pods are "tolerant" of the taint. Taints are set on nodes to mark them as **off-limits** to most pods, and tolerations are applied to pods to **allow them** to run on those specific tainted nodes.
-
+- Pods are placed automatically on eligible Nodes.
+- Pods can move to other Nodes with the same taint if needed.
+- Long-term rules for workload placement (e.g., GPU, high-memory).
+- Kubernetes reschedules Pods if the Node fails.	
 ### In Short:  
 - **Manual scheduling** directly assigns pods to nodes.
 - **Taints and Tolerations** control which pods are allowed on certain nodes, but the pods are still scheduled by Kubernetes.
