@@ -827,6 +827,7 @@ Using a ConfigMap to store configuration data in Kubernetes instead of embedding
 1. Separation of Concerns
 - **ConfigMap**: Handles configuration data.
 - **Deployment**: Manages application deployment and lifecycle.
+
 By separating these, you can:
 - Modify configuration without redeploying the application.
 - Keep your application deployment portable and decoupled from specific configuration details.
