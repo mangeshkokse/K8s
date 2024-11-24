@@ -520,10 +520,11 @@ spec:
 
 - **Taints and Tolerations**:  
   These allow nodes to **repel certain pods** unless those pods are "tolerant" of the taint. Taints are set on nodes to mark them as **off-limits** to most pods, and tolerations are applied to pods to **allow them** to run on those specific tainted nodes.
-- Pods are placed automatically on eligible Nodes.
-- Pods can move to other Nodes with the same taint if needed.
-- Long-term rules for workload placement (e.g., GPU, high-memory).
-- Kubernetes reschedules Pods if the Node fails.	
+  - Pods are placed automatically on eligible Nodes.
+  - Pods can move to other Nodes with the same taint if needed.
+  - Long-term rules for workload placement (e.g., GPU, high-memory).
+  - Kubernetes reschedules Pods if the Node fails.
+    
 ### In Short:  
 - **Manual scheduling** directly assigns pods to nodes.
 - **Taints and Tolerations** control which pods are allowed on certain nodes, but the pods are still scheduled by Kubernetes.
