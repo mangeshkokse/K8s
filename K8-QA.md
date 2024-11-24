@@ -468,6 +468,14 @@ Taints and tolerations are mechanisms that **control which pods can be scheduled
 ## How it Works:
 - **Nodes** with taints repel all pods unless a **pod** has a matching toleration.
 - This ensures that only specific pods can run on certain nodes, allowing for better control of resource allocation and workload isolation.
+## How Taints and Tolerations Work
+**Taints on Nodes:**
+- You "taint" a Node to mark it with a condition.
+- Example: `node1` is marked with a taint like `key=value:NoSchedule`.
+
+**Tolerations on Pods:**
+- A Pod adds a "toleration" to match the Node's taint.
+- If the toleration matches the taint, the Pod can run on the Node.
 
 ## Taint Syntax:
 ```bash
@@ -506,6 +514,18 @@ spec:
 ```
 - **Toleration:** The pod has a toleration that matches the taint key=example:NoSchedule, which allows it to be scheduled on the node with that taint.
 
+## Taint Effects
+A taint has three effects:
+1. `NoSchedule`:
+- Pods without matching tolerations will not be scheduled on this Node.
+- Example: "Only specific workloads can run here."
+2. `PreferNoSchedule`:
+- Pods without matching tolerations will try to avoid this Node but may still be scheduled if necessary.
+- Example: "Prefer not to use this Node unless there's no other option."
+3. `NoExecute`:
+- Pods without matching tolerations are evicted (removed) from the Node if they’re already running and will not be scheduled there again.
+- Example: "Keep this Node completely clear of certain Pods."
+  
 # Q. Difference Between Manual Scheduling and Taint & Toleration in Kubernetes
 
 - **Manual Scheduling**:  
