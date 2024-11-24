@@ -667,6 +667,86 @@ kubectl rollout undo deployment/<deployment-name> --to-revision=<revision-number
 ```
 In brief: Use `kubectl rollout undo` to rollback a deployment to a previous or specific revision.
 
+# Q. Rolling Back a Kubernetes Deployment Using CI/CD.
+- Rolling back a Kubernetes deployment with CI/CD ensures that you can quickly revert to a stable version of your application in case of issues with the current deployment. Here's how to integrate rollbacks into a CI/CD pipeline.
+- **Overview of Rollback with Kubernetes**
+  - In Kubernetes, a Deployment retains a history of revisions (default is 10). You can use these revisions to roll back to a previous stable state. In CI/CD, rollbacks are triggered automatically or manually based on the deployment status.
+
+## Steps to Rollback Kubernetes Deployment in CI/CD
+1. Use Deployment with Revisions
+Ensure your Deployment YAML supports revision tracking by defining it as follows:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  namespace: default
+spec:
+  replicas: 3
+  revisionHistoryLimit: 10 # Retain 10 revisions
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app-container
+        image: my-app:latest
+        ports:
+        - containerPort: 80
+```
+**Note - Check in yaml `revisionHistoryLimit` , `type: RollingUpdate`.**
+
+2. Configure CI/CD Pipeline for Rollback
+Your pipeline should include:
+- **Monitoring**: Detect deployment failure using metrics, health checks, or readiness probes.
+- **Rollback Trigger**: Automate or allow manual rollback in case of failure.
+- **Command Execution**: Use Kubernetes CLI (kubectl) or APIs to execute the rollback.
+
+3. Implement Rollback Logic in CI/CD
+Here’s how to integrate rollback logic in popular CI/CD tools:
+## GitLab CI/CD Example
+`.gitlab-ci.yml`:
+```yaml
+stages:
+  - deploy
+  - rollback
+
+variables:
+  KUBECONFIG: /path/to/kubeconfig
+
+deploy:
+  stage: deploy
+  script:
+    - kubectl apply -f k8s/deployment.yaml
+  only:
+    - main
+
+monitor:
+  stage: deploy
+  script:
+    - |
+      DEPLOY_STATUS=$(kubectl rollout status deployment/my-app --timeout=60s)
+      if [[ $DEPLOY_STATUS != *"successfully"* ]]; then
+        echo "Deployment failed. Triggering rollback."
+        exit 1
+      fi
+  only:
+    - main
+
+rollback:
+  stage: rollback
+  script:
+    - echo "Rolling back to the previous version..."
+    - kubectl rollout undo deployment/my-app
+  when: on_failure
+```
+**Note - check rollback stage**
 
 # Q. Production-Level Rollback in GitLab CI/CD
 
