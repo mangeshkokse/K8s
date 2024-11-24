@@ -1427,6 +1427,96 @@ spec:
 3. **Ingress Controller**: Ensure that an Ingress Controller (e.g., NGINX, Traefik) is deployed to process the Ingress rules and provide external access.
     By doing this, traffic from the Ingress routes to the service, which forwards it to the appropriate port on the pod.
 
+
+# Q. Role-Based Access Control (RBAC) in Kubernetes
+**RBAC (Role-Based Access Control)** in Kubernetes is a security mechanism used to regulate access to cluster resources. 
+It defines who can do what on which resources, ensuring that users and applications have the appropriate permissions.
+
+## Key Components of RBAC
+1. **Subjects**: Who is being granted access.
+   - **Users**: Human operators or service accounts.
+   - **Groups**: A collection of users.
+   - **Service Accounts**: Accounts used by applications or processes within the cluster.
+
+2. **Roles and ClusterRoles**: What actions are permitted.   
+  - **Role**: Defines permissions within a specific namespace.
+  - **ClusterRole**: Defines permissions cluster-wide or for resources not bound to a namespace (e.g., nodes, PersistentVolumes).
+
+3. **RoleBinding and ClusterRoleBinding**: How the permissions are applied.    
+  - **RoleBinding**: Associates a Role with a Subject in a specific namespace.
+  - **ClusterRoleBinding**: Associates a ClusterRole with a Subject at the cluster level.
+
+## Core RBAC Resources
+**Role** - A Role grants permissions to resources within a namespace
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: pod-reader
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+```
+- `apiGroups`: The API group of the resource. Empty string (`""`) refers to core resources like Pods.
+- `resources`: The resources the Role can access (e.g., Pods, ConfigMaps).
+- `verbs`: The actions allowed (e.g., `get`, `list`, `create`, `delete`).
+
+**ClusterRole** - A ClusterRole grants permissions cluster-wide or for non-namespaced resources.
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: node-reader
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "list"]
+```
+**RoleBinding**- A RoleBinding assigns a Role to a Subject within a namespace.
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+  namespace: default
+subjects:
+- kind: User
+  name: jane
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+```
+- **subjects**: Specifies who (user, group, or service account) is being granted the Role.
+- **roleRef**: References the Role that defines the permissions.
+
+**ClusterRoleBinding**- A ClusterRoleBinding assigns a ClusterRole to a Subject across the entire cluster.
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: read-nodes
+subjects:
+- kind: User
+  name: jane
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: node-reader
+  apiGroup: rbac.authorization.k8s.io
+```
+## Common Verbs in RBAC
+- `get`: Retrieve a resource.
+- `list`: List all resources of a type
+- `create`: Create new resources.
+- `update`: Update existing resources.
+- `delete`: Delete resources.
+
+
+
 # Q. Suppose you have an application deployed inside EKS, and your application needs some secrets to run. These secrets are stored in the Secrets Manager service in AWS. How will you provision this so that your application can access those secrets and configurations?
 
 To provision your application deployed inside Amazon EKS to access secrets from AWS Secrets Manager, you can follow these steps:
