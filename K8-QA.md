@@ -610,7 +610,7 @@ Copy or move the YAML file to the directory where the kubelet looks for static p
 **3. Kubelet starts the pod:**
 The kubelet automatically detects and runs the static pod.
 
-# Q. Kubernetes Multiple Schedulers
+# Q. Kubernetes Multiple Schedulers (custom scheduler).
 
 In Kubernetes, you can run **multiple schedulers** alongside the default scheduler. Each scheduler can have its own logic and policies for assigning pods to nodes. This is useful when you want different scheduling behavior for specific workloads.
 
