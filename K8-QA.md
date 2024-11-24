@@ -610,6 +610,38 @@ Copy or move the YAML file to the directory where the kubelet looks for static p
 **3. Kubelet starts the pod:**
 The kubelet automatically detects and runs the static pod.
 
+# Q. What is the Sidecar Concept in Kubernetes?
+In Kubernetes, the sidecar pattern is a design approach where you run a secondary container (called a sidecar container) alongside your main application container within the same Pod. This sidecar container complements the main container by providing additional functionality that the main application needs but doesn't implement itself.
+
+## Why Use the Sidecar Pattern?
+**Example: Sidecar for Logging**
+Pod with a Logging Sidecar
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logging-sidecar
+spec:
+  containers:
+  - name: app
+    image: my-app:latest
+    volumeMounts:
+    - name: log-volume
+      mountPath: /var/log/app
+  - name: log-forwarder
+    image: fluentd:latest
+    volumeMounts:
+    - name: log-volume
+      mountPath: /var/log/app
+  volumes:
+  - name: log-volume
+    emptyDir: {}
+```
+**How It Works:**
+- The main container (`app`) writes logs to `/var/log/app`.
+- The sidecar container (`log-forwarder`) reads the logs from the same directory and sends them to a central logging system.
+
+
 # Q. Kubernetes Multiple Schedulers (custom scheduler).
 
 - In Kubernetes, you can run **multiple schedulers** alongside the default scheduler. Each scheduler can have its own logic and policies for assigning pods to nodes. This is useful when you want different scheduling behavior for specific workloads.
