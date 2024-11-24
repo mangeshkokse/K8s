@@ -567,7 +567,20 @@ spec:
 
 # Q. What is a Static Pod?
 
-A **Static Pod** in Kubernetes is a pod that is **managed directly by the kubelet** on a specific node, rather than by the Kubernetes API server. Static pods are defined by placing their pod definitions in a specific directory on the node, and they are created and monitored by the kubelet. These pods are tied to the lifecycle of the node and do not show up in `kubectl` commands, but their status can be viewed.
+A **Static Pod** in Kubernetes is a pod that is **managed directly by the kubelet** on a specific node, rather than by the Kubernetes API server. Static pods are defined by placing their pod definitions in a specific directory (e.g., `/etc/kubernetes/manifests`) on the node, and they are created and monitored by the kubelet only. These pods are tied to the lifecycle of the node and do not show up in `kubectl` commands, but their status can be viewed.
+
+- Static Pods are managed directly by the kubelet daemon on a specific node, without taking help or communicating with control plane components.
+- All Control plane components are also a static pods.
+
+## How Static Pods Work
+1. The kubelet watches a directory (e.g., `/etc/kubernetes/manifests`) for Pod manifest files.
+2. When a Pod manifest is placed in this directory, the kubelet creates and starts the Pod.
+3. The kubelet monitors the Pod and restarts it if it fails.
+4. The Static Pod will persist as long as its manifest file exists in the directory.
+5. If a node is removed (e.g., fails or is deleted), Static Pods on that node will not be rescheduled on another node because they are tied to the specific node where the manifest file resides.
+
+## use case
+- Self-Hosted Kubernetes
 
 ### In Brief:
 A static pod is a pod managed directly by the kubelet, not by the Kubernetes control plane.
