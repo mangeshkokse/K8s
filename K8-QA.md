@@ -455,7 +455,13 @@ spec:
 - **nodeName: my-node-name:** This is where you manually specify the node where you want the pod to run (replace my-node-name with your actual node's name).
 
 # Q. Taints and Tolerations in Kubernetes
+Using Taints and Tolerations effectively can help optimize your Kubernetes cluster by ensuring the right workloads are scheduled on the right nodes
+
 Taints and tolerations are mechanisms that **control which pods can be scheduled on which nodes**.
+- Taints and tolerations work together to ensure that pods are not scheduled onto inappropriate nodes.
+- One or more taints are applied to a node, this marks that the node should not accept any pods that do not tolerate the taints.
+- Taints are applied to the nodes and Tolerations are applied to pods
+  
 ## Why Use Taints and Tolerations?
 -**Sometimes you want to:**
 - Reserve certain nodes for specific workloads (e.g., GPU nodes for AI/ML tasks).
@@ -465,27 +471,16 @@ Taints and tolerations are mechanisms that **control which pods can be scheduled
 - **Taints**: Applied to nodes to **prevent** certain pods from being scheduled on them unless those pods explicitly tolerate the taint.
 - **Tolerations**: Applied to pods to **allow** them to be scheduled on nodes with matching taints.
 
-## How it Works:
-- **Nodes** with taints repel all pods unless a **pod** has a matching toleration.
-- This ensures that only specific pods can run on certain nodes, allowing for better control of resource allocation and workload isolation.
-## How Taints and Tolerations Work
-**Taints on Nodes:**
-- You "taint" a Node to mark it with a condition.
-- Example: `node1` is marked with a taint like `key=value:NoSchedule`.
+## Taint_effect - 
+1. `NoScheduled` - No pod will be able to scheduled onto taint applied node unless it has a matching toleration.
+2. `Prefer NoSchedule` - Softe version of Noschedule --the system will try to avoid placing a pod that does not tolerate the taint on the node, but it is not required. It will try to tolerate also.
+3. `NoExecute` - In node we have pods already, Now we have applied NoExecute taint so Any pods that do not tolerate the taint will be evicted imnmediately, and pods that do tolerate the taint will never be evicted.
 
-**Tolerations on Pods:**
-- A Pod adds a "toleration" to match the Node's taint.
-- If the toleration matches the taint, the Pod can run on the Node.
 
 ## Taint Syntax:
 ```bash
-kubectl taint nodes <node-name> key=value:effect
+kubectl taint nodes <node-name> key=value:taint_effect
 ```
-**key=value:** The key-value pair for the taint.
-**effect:** The taint effect, which can be:
-**NoSchedule:** Pods that don’t tolerate the taint won’t be scheduled on the node.
-**PreferNoSchedule:** Kubernetes tries to avoid scheduling pods that don’t tolerate the taint.
-**NoExecute:** Evicts already running pods that don’t tolerate the taint.
 ## Toleration Syntax:
 In the pod YAML, a toleration can be specified to allow the pod to be scheduled on a node with a matching taint.
 
@@ -513,18 +508,6 @@ spec:
     image: nginx
 ```
 - **Toleration:** The pod has a toleration that matches the taint key=example:NoSchedule, which allows it to be scheduled on the node with that taint.
-
-## Taint Effects
-A taint has three effects:
-1. `NoSchedule`:
-- Pods without matching tolerations will not be scheduled on this Node.
-- Example: "Only specific workloads can run here."
-2. `PreferNoSchedule`:
-- Pods without matching tolerations will try to avoid this Node but may still be scheduled if necessary.
-- Example: "Prefer not to use this Node unless there's no other option."
-3. `NoExecute`:
-- Pods without matching tolerations are evicted (removed) from the Node if they’re already running and will not be scheduled there again.
-- Example: "Keep this Node completely clear of certain Pods."
   
 # Q. Difference Between Manual Scheduling and Taint & Toleration in Kubernetes
 
