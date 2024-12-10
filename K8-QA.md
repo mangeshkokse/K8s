@@ -1176,6 +1176,44 @@ spec:
         cidr: 10.0.0.0/24
 ```
 
+# Q. What is Service Accounts.
+A `Service Account` in Kubernetes is an identity assigned to a `Pod`, allowing it to interact with the Kubernetes API. It is used to authenticate and manage access permissions for Pods to perform actions within the cluster, such as listing resources or accessing secrets.
+
+## Key Points:
+1.**Default Service Account:**
+- Every namespace has a default service account.
+- If no custom service account is specified, Pods use the default one.
+
+2.**Custom Service Accounts:**
+- You can create and assign custom service accounts to provide specific permissions using `Role` or `ClusterRole bindings`.
+
+3.**Use Case:**
+- A Pod needs to access secrets, ConfigMaps, or other Kubernetes resources securely.
+
+## Example:
+1.**Create a Service Account:**
+```bash
+kubectl create serviceaccount my-service-account
+```
+2.**Assign the Service Account to a Pod:**
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  serviceAccountName: my-service-account
+  containers:
+  - name: my-container
+    image: my-image
+```
+3.**Give Permissions (Optional):**
+- Use RoleBinding or ClusterRoleBinding to provide specific access.
+
+## Why Use a Service Account?
+- To control what actions Pods can perform within the cluster.
+- To securely interact with the Kubernetes API without sharing credentials.
+
 
 
 # Q. What is a Ingress?
