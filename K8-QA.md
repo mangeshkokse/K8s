@@ -931,15 +931,98 @@ spec:
 
 # Q. What is a Kubernetes Secret?
 
-A **Kubernetes Secret** is used to store and manage **sensitive information** such as passwords, tokens, and keys. Unlike ConfigMaps, Secrets are encoded and handled more securely to prevent exposing sensitive data in plain text.
+A **Kubernetes Secret** is used to store and manage **sensitive information** such as passwords, tokens, and keys. Unlike ConfigMaps, Secrets are encoded and handled more securely to prevent exposing sensitive data in plain text. Secrets ensure that this sensitive data is not hardcoded in configuration files or container images, which can lead to security vulnerabilities.
 
 ### Key Points:
-- **Stores sensitive data**: Used for passwords, API keys, or certificates.
+- **Base64 Encoding**: Secrets data is stored in Base64-encoded format by default. While not encrypted, it prevents plain-text storage.
 - **More secure**: Data is base64-encoded and stored securely in the cluster.
 - **Injected into Pods**: Can be injected as environment variables or mounted as files.
 
-### In Brief:
-**Kubernetes Secrets** securely store and manage sensitive information, keeping it separate from your application code.
+### Types of Kubernetes Secrets:
+1.**Opaque Secrets (Default Type)**
+ - The most generic type of Secret, used to store arbitrary key-value pairs.
+ - Storing credentials like usernames, passwords, and API keys.
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+type: Opaque
+data:
+  username: dXNlcg==  # Base64 encoded 'user'
+  password: cGFzc3dvcmQ=  # Base64 encoded 'password'
+```
+2.**TLS Secrets**
+ - Used to store TLS certificates and private keys.
+ - Configuring TLS for Ingress resources or other secure communication.
+ - Automatically integrates with Kubernetes Ingress for HTTPS.
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tls-secret
+type: kubernetes.io/tls
+data:
+  tls.crt: <base64 encoded certificate>
+  tls.key: <base64 encoded private key>
+```
+3.**Docker Config Secrets**
+- Stores Docker registry credentials in JSON format.
+- Authenticating Kubernetes to pull container images from private Docker registries like Docker Hub, Amazon ECR, or GCR.
+- Creation Command:
+```bash
+kubectl create secret docker-registry regcred \
+  --docker-username=<username> \
+  --docker-password=<password> \
+  --docker-email=<email> \
+  --docker-server=<server>
+```
+- Generated YAML:
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: regcred
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: <Base64 encoded JSON>
+```
+4.**Service Account Token Secrets**
+- Automatically created by Kubernetes to store tokens for service accounts.
+- Allows workloads to authenticate with the Kubernetes API server.
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: default-token-abcde
+type: kubernetes.io/service-account-token
+data:
+  token: <Base64 encoded token>
+```
+
+## Accessing Secrets in Kubernetes
+1.**Environment Variables**
+- Secrets can be injected as environment variables in a container.
+```yaml
+  env:
+  - name: API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: my-secret
+        key: api-key
+```
+2.**Mounted Volumes**
+- Secrets can be mounted as files within a container.
+```yaml
+volumeMounts:
+  - name: secret-volume
+    mountPath: "/etc/secret"
+volumes:
+  - name: secret-volume
+    secret:
+      secretName: my-secret
+```
+
 
 ## Best Practices for Handling Kubernetes Secrets in Production
 Managing Kubernetes Secrets securely in a production environment is critical to protect sensitive data such as passwords, API keys, and certificates. Below are the best practices and methods to ensure the secure handling of Kubernetes Secrets in production.
