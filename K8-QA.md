@@ -1328,6 +1328,46 @@ spec:
 - **Explanation:** This policy allows pods with the label `app: app1` to only communicate with pods labeled `app: app2`.
 **In brief:** Network Policies control network traffic between pods, ensuring secure communication by allowing or denying traffic based on defined rules.
 
+# Q. What is ENI and CNI.
+## ENI 
+- ENI (Elastic Network Interface) and CNI (Container Network Interface) are key components in Kubernetes networking, especially when Kubernetes is deployed in cloud environments like AWS Elastic Kubernetes Service (EKS).
+- An ENI is a virtual network interface provided by cloud platforms like AWS. It represents a network adapter attached to an instance, such as an EC2 instance, enabling it to communicate within a Virtual Private Cloud (VPC).
+
+## Role in Kubernetes:
+- In Kubernetes, ENIs are attached to worker nodes (e.g., EC2 instances in AWS EKS) to enable **network connectivity** for pods and the node itself.
+- Each ENI can have multiple private IP addresses, which are assigned to the pods running on that node.
+
+## Key Features:
+1.**IP Address Assignment** - Pods get their IP addresses from the ENIs attached to the worker nodes.
+2.**Seamless VPC Integration** - Ensures Kubernetes pods operate as first-class citizens in the AWS VPC.
+3.**Security Groups** - ENIs can be associated with security groups for fine-grained control over network traffic.
+
+**Example in AWS EKS:**
+- A Kubernetes node (an EC2 instance) might have multiple ENIs attached.
+- The AWS VPC CNI plugin uses these ENIs to allocate IPs to the pods running on the node.
+
+## CNI 
+- A CNI is a standard for configuring networking for Linux containers. Kubernetes uses CNI plugins to manage the networking of pods.
+## Role in Kubernetes:
+-  Kubernetes relies on CNI plugins to provide networking capabilities like
+   - Assigning IP addresses to pods.
+   - Enabling pod-to-pod and pod-to-service communication.
+   - Configuring routes for external traffic.
+## Key Features:
+1.**Dynamic IP Management** - Allocates IPs to pods dynamically.
+2.**Networking Policies** - Enforces Kubernetes `NetworkPolicy` to control traffic between pods.
+3.**Extensibility** - Supports various plugins (e.g., AWS VPC CNI, Calico, Flannel).
+
+# Q. How ENI and CNI Work Together in Kubernetes
+1.**ENI:**
+- ENIs are cloud-specific network interfaces (e.g., in AWS) attached to Kubernetes worker nodes.
+- Provide private IP addresses from the VPC for pods.
+2.**CNI:**
+- The CNI plugin (e.g., AWS VPC CNI) requests IP addresses from ENIs and assigns them to pods.
+- Configures routes, bridges, and network namespaces for pod communication.
+  
+
+
 # Q. What is StatefulSets in Kubernetes?
 
 A **StatefulSet** in Kubernetes is a workload API object that is used to manage **stateful applications**. Unlike Deployments, StatefulSets ensure that each pod has a **unique, stable identity** and **persistent storage**, even if the pod is rescheduled.
