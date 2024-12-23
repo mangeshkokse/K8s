@@ -1330,11 +1330,10 @@ spec:
 
 # Q. How Network policy get assign.
 - In Kubernetes, NetworkPolicies control the network communication between Pods and other entities in the cluster. They can be applied at the namespace level but are scoped to control network access at the Pod level.
-  1. Scope of NetworkPolicies -
-     **Namespace Level**
+    1. **Namespace Level**
        - NetworkPolicies are namespace-scoped, meaning they are defined within a specific namespace and can only affect Pods in that namespace.
        - A NetworkPolicy cannot control traffic to or from Pods in other namespaces unless explicitly defined using selectors or ingress/egress rules that target those namespaces.
-     **Pod Level**
+    2. **Pod Level**
        - Within the namespace, NetworkPolicies target Pods based on labels.
        - Pods without matching labels are not affected by the NetworkPolicy.
      
