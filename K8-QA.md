@@ -490,6 +490,7 @@ spec:
 - `topologyKey`: Ensures scheduling happens within the same node (`kubernetes.io/hostname`).
 
 ## Pod Anti-Affinity Example
+Pod Anti-Affinity ensures that specific pods are NOT scheduled on the same node. This is useful for high availability and fault tolerance by distributing workloads across multiple nodes.
 ```yaml
 apiVersion: v1
 kind: Pod
