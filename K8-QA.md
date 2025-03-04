@@ -1,4 +1,9 @@
-
+# Q What is the purpose of the redinessprobs
+# Q What is pod distribution budget (PDB) ?
+# Q what is pod affinity ?
+# Q what is Anti-Affinity ?
+# Q What is service mesh ?
+# Q What is kubernets operator ?
 # Q. What is Kubernetes?
 
 Kubernetes is an open-source platform for automating the deployment, scaling, and management of containerized applications. It helps in managing clusters of containers across multiple hosts, ensuring that your applications run efficiently and remain available.
