@@ -699,6 +699,114 @@ spec:
 - The main container (`app`) writes logs to `/var/log/app`.
 - The sidecar container (`log-forwarder`) reads the logs from the same directory and sends them to a central logging system.
 
+# Q. Readiness Probes & Liveness Probes in Kubernetes
+Kubernetes probes are used to check the health of a container and determine how it should be treated by the scheduler. They help ensure that your application runs smoothly and recovers from failures automatically.
+
+1. Readiness Probe
+- Determines when a pod is ready to accept traffic.
+- If the probe fails, Kubernetes removes the pod from the service endpoint, so it doesn’t receive traffic.
+- When an application takes time to initialize before handling requests.
+- If an app temporarily loses connectivity to a database and should not receive traffic.
+```yaml
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
+```
+- The pod will only receive traffic after the `/health` endpoint returns a successful response.
+
+2. Liveness Probe
+- Determines if a pod is still alive (not stuck or crashed).
+- If the probe fails, Kubernetes kills the pod and restarts it.
+- If the app gets stuck in a deadlock or stops responding, Kubernetes restarts it.
+- Ensures self-healing of the application.
+```yaml
+livenessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 3
+  periodSeconds: 5
+```
+- If the application stops responding on port 8080, Kubernetes restarts the pod.
+
+3. Startup Probe
+- Used for slow-starting applications to delay liveness checks. ✔ Use Case: Apps with long initialization times.
+```yaml
+startupProbe:
+  exec:
+    command: ["cat", "/tmp/ready"]
+  failureThreshold: 30
+  periodSeconds: 5
+```
+- Delays liveness checks for up to 30 attempts.
+
+# Q. What is a Service Mesh in Kubernetes?
+A service mesh is a dedicated infrastructure layer for managing service-to-service communication in a microservices architecture. It provides security, observability, traffic control, and resilience for services running in Kubernetes or other environments.
+
+1. Why Use a Service Mesh?
+- ***Traffic Control*** – Intelligent routing, load balancing, retries, and circuit breaking.
+- ***Security*** – Automatic mTLS (Mutual TLS) encryption between services.
+- ***Observability*** – Tracing, logging, and monitoring of service communication.
+- ***Resilience*** – Helps handle failures, retries, and timeouts without modifying application code.
+
+## How a Service Mesh Works ?
+A service mesh uses sidecar proxies deployed alongside application services to control and secure traffic.
+- ***Sidecar Proxy***: Each pod gets an additional proxy container that intercepts traffic.
+- ***Control Plane***: Manages configurations, policies, and security settings for proxies.
+- ***Data Plane***: Handles the actual service communication using sidecar proxies.
+
+## Popular Service Mesh Solutions.
+1. ***Istio***
+- mTLS for secure communication
+- Traffic splitting and canary deployments
+- Built-in observability (Grafana, Prometheus, Jaeger)
+
+2. ***Consul (HashiCorp)***
+- Multi-platform service discovery
+- Works across VMs & Kubernetes
+- Supports advanced security policies
+
+# Q. Pod Disruption Budget (PDB) in Kubernetes.
+- A Pod Disruption Budget (PDB) is a Kubernetes object that helps ensure that a minimum number of replicas of a pod remain available during voluntary disruptions (e.g., node upgrades, scaling, or maintenance).
+
+## Why Use a Pod Disruption Budget?
+- Prevents too many pods from going down simultaneously during voluntary disruptions.
+- Ensures high availability of critical applications.
+- Useful for StatefulSets, Deployments, and ReplicaSets where at least some pods must always be running.
+
+## How PDB Works.
+- Ensure at least 1 pod is always running.
+- `Example`: Ensure at least 1 pod is always running
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: my-app-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: my-app
+```
+- If only 1 pod exists, Kubernetes won't evict it until a new pod is ready.
+- `Example`: Allow up to 1 pod to be unavailable
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: my-app-pdb
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: my-app
+```
+## When is PDB Used?
+- ***During Kubernetes Upgrades*** → Ensures app remains available.
+- ***Cluster Scaling*** → Prevents too many pods from terminating.
+- ***Draining Nodes** → Ensures at least some replicas stay running.
 
 # Q. Kubernetes Multiple Schedulers (custom scheduler).
 
