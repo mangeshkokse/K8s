@@ -699,48 +699,54 @@ spec:
 - The main container (`app`) writes logs to `/var/log/app`.
 - The sidecar container (`log-forwarder`) reads the logs from the same directory and sends them to a central logging system.
 
-# Q. Readiness Probes & Liveness Probes in Kubernetes
-Kubernetes probes are used to check the health of a container and determine how it should be treated by the scheduler. They help ensure that your application runs smoothly and recovers from failures automatically.
+# Q. What is Probes in Kubernetes.
+***Probes*** in Kubernetes are health checks that tell if a pod is running properly or needs to be restarted.
 
-1. Readiness Probe
-- Determines when a pod is ready to accept traffic.
-- If the probe fails, Kubernetes removes the pod from the service endpoint, so it doesn’t receive traffic.
-- When an application takes time to initialize before handling requests.
-- If an app temporarily loses connectivity to a database and should not receive traffic.
+1. ***Liveness Probe*** → Checks if the pod is alive
+- Why?
+- If the app hangs, crashes, or stops responding, Kubernetes restarts it.
+- `Example` (Restart pod if it fails health check on port 8080):
 ```yaml
-readinessProbe:
+livenessProbe:
   httpGet:
     path: /health
     port: 8080
   initialDelaySeconds: 5
   periodSeconds: 10
 ```
-- The pod will only receive traffic after the `/health` endpoint returns a successful response.
+- If this check fails, Kubernetes kills and restarts the pod.
+- `initialDelaySeconds: 5` - This means Kubernetes will wait 5 seconds after the container starts before running the first liveness probe check. This delay allows the application to initialize properly before the health check begins.
+- `periodSeconds: 10` - This specifies that Kubernetes will perform the liveness probe every 10 seconds after the initial delay.
 
-2. Liveness Probe
-- Determines if a pod is still alive (not stuck or crashed).
-- If the probe fails, Kubernetes kills the pod and restarts it.
-- If the app gets stuck in a deadlock or stops responding, Kubernetes restarts it.
-- Ensures self-healing of the application.
+2. ***Readiness Probe*** → Checks if the pod is ready to receive traffic
+- Why?
+- A pod may take time to start (e.g., waiting for a database).
+- Kubernetes removes it from the service until it’s ready.
+- `Example` (Only send traffic after app is ready):
 ```yaml
-livenessProbe:
-  tcpSocket:
+readinessProbe:
+  httpGet:
+    path: /ready
     port: 8080
-  initialDelaySeconds: 3
-  periodSeconds: 5
+  initialDelaySeconds: 5
+  periodSeconds: 10
 ```
-- If the application stops responding on port 8080, Kubernetes restarts the pod.
+-  If this check fails, Kubernetes stops sending traffic to the pod but does NOT restart it.
 
-3. Startup Probe
-- Used for slow-starting applications to delay liveness checks. ✔ Use Case: Apps with long initialization times.
+3. ***Startup Probe*** → Checks if a slow-starting app has fully started
+- Why?
+- Some apps take a long time to start (e.g., Java apps).
+- Prevents liveness probe from killing the app too early.
+- `Example` (Give app 30 tries before marking as failed):
 ```yaml
 startupProbe:
-  exec:
-    command: ["cat", "/tmp/ready"]
+  httpGet:
+    path: /startup
+    port: 8080
   failureThreshold: 30
   periodSeconds: 5
 ```
-- Delays liveness checks for up to 30 attempts.
+- Kubernetes waits for the startup probe to pass before checking liveness.
 
 # Q. What is a Service Mesh in Kubernetes?
 A service mesh is a dedicated infrastructure layer for managing service-to-service communication in a microservices architecture. It provides security, observability, traffic control, and resilience for services running in Kubernetes or other environments.
