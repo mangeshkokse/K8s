@@ -458,7 +458,7 @@ spec:
 - Affinity in Kubernetes is used to control pod scheduling based on nodes or other pods. It allows Kubernetes to influence or restrict where pods are placed within the cluster.
 - Pod Affinity is a Kubernetes scheduling concept that allows you to control where pods are placed relative to other pods. It helps group pods together on specific nodes based on labels and topology constraints.
 
-1.***Node Affinity** → Control which nodes a pod runs on
+1. ***Node Affinity*** → Control which nodes a pod runs on
 - `Example`:
 - Run this pod only on SSD nodes
 - Run this pod only on GPU nodes
@@ -475,7 +475,7 @@ affinity:
 ```
 - Pod will only run on nodes labeled `disktype=ssd`.
 
-2.***Pod Affinity*** → Keep certain pods together on the same node
+2. ***Pod Affinity*** → Keep certain pods together on the same node
 - `Example`:
 - Run frontend near the backend
 - Keep cache and database in the same node
@@ -493,7 +493,7 @@ affinity:
 ```
 - Ensures `frontend` and `backend` run on the same node.
 
-3.***Pod Anti-Affinity*** → Ensure certain pods run on different nodes
+3. ***Pod Anti-Affinity*** → Ensure certain pods run on different nodes
 - "Example":
 - Don't run two replicas on the same node
 - Distribute Redis across multiple nodes
