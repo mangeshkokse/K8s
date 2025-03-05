@@ -453,28 +453,36 @@ spec:
 ```
 ## Explanation:
 - **nodeName: my-node-name:** This is where you manually specify the node where you want the pod to run (replace my-node-name with your actual node's name).
-  
-# Q. what is pod affinity ?
-Pod Affinity is a Kubernetes scheduling concept that allows you to control where pods are placed relative to other pods. It helps group pods together on specific nodes based on labels and topology constraints.
-## Types of Pod Affinity
-1. Pod Affinity (`requiredDuringSchedulingIgnoredDuringExecution` and `preferredDuringSchedulingIgnoredDuringExecution`)
-- Ensures that pods are scheduled close to each other based on specific labels.
-- Useful for applications that need low-latency communication (e.g., microservices that frequently interact).
-  
-2. Pod Anti-Affinity (`requiredDuringSchedulingIgnoredDuringExecution` and `preferredDuringSchedulingIgnoredDuringExecution`)
-- Ensures that pods are spread out across nodes or zones.
-- Useful for high availability and fault tolerance (e.g., running replicas of the same app on different nodes to prevent failures).
 
-## Pod Affinity Example
+# Q. what is pod affinity?
+- Affinity in Kubernetes is used to control pod scheduling based on nodes or other pods. It allows Kubernetes to influence or restrict where pods are placed within the cluster.
+- Pod Affinity is a Kubernetes scheduling concept that allows you to control where pods are placed relative to other pods. It helps group pods together on specific nodes based on labels and topology constraints.
+
+1.***Node Affinity** → Control which nodes a pod runs on
+- `Example`:
+- Run this pod only on SSD nodes
+- Run this pod only on GPU nodes
+```yaml 
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: disktype
+          operator: In
+          values:
+          - ssd
+```
+- Pod will only run on nodes labeled `disktype=ssd`.
+
+2.***Pod Affinity*** → Keep certain pods together on the same node
+- `Example`:
+- Run frontend near the backend
+- Keep cache and database in the same node
 ```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: frontend
-spec:
-  affinity:
-    podAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
+affinity:
+  podAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:
           matchExpressions:
           - key: app
@@ -482,35 +490,26 @@ spec:
             values:
             - backend
         topologyKey: "kubernetes.io/hostname"
-  containers:
-  - name: nginx
-    image: nginx
 ```
-- `labelSelector`: Looks for pods labeled app=backend.
-- `topologyKey`: Ensures scheduling happens within the same node (`kubernetes.io/hostname`).
+- Ensures `frontend` and `backend` run on the same node.
 
-## Pod Anti-Affinity Example
-Pod Anti-Affinity ensures that specific pods are NOT scheduled on the same node. This is useful for high availability and fault tolerance by distributing workloads across multiple nodes.
+3.***Pod Anti-Affinity*** → Ensure certain pods run on different nodes
+- "Example":
+- Don't run two replicas on the same node
+- Distribute Redis across multiple nodes
 ```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx-pod
-spec:
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:
           matchExpressions:
           - key: app
             operator: In
             values:
-            - nginx
+            - redis
         topologyKey: "kubernetes.io/hostname"
-  containers:
-  - name: nginx
-    image: nginx
 ```
+- Ensures `redis` pods are spread across different nodes.       
 
 
 # Q. Taints and Tolerations in Kubernetes
