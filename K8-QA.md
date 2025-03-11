@@ -398,6 +398,34 @@ A **Kubernetes Service** is an abstraction that defines a logical set of Pods an
 
 In brief, a Kubernetes Service ensures that Pods can be accessed reliably, even if the underlying Pods are replaced or rescheduled, and offers different ways to expose services depending on the need.
 
+# Q. What is a Service Endpoint ?
+In Kubernetes, a Service Endpoint is the actual IP address and port of a Pod that a Kubernetes Service routes traffic to. It acts as the connection point between services and the underlying Pods.
+
+- **How It Works**
+1.**Pods Have Dynamic IPs** – In Kubernetes, Pod IPs can change when they restart or move to another node.
+2.**Services Provide a Stable Access Point** – Kubernetes Services provide a stable virtual IP (ClusterIP) to connect to.
+3.**Endpoints Track the Real Pod IPs** – The Endpoints API dynamically maps a Service to the actual running Pods.  
+
+**Example:**
+```less
+my-app-service (ClusterIP: 10.96.1.1)
+   ├──> Endpoint 192.168.1.10:80 (Pod 1)
+   ├──> Endpoint 192.168.1.11:80 (Pod 2)
+   └──> Endpoint 192.168.1.12:80 (Pod 3)
+```
+When the service is accessed, Kubernetes automatically load-balances traffic across these endpoints.
+
+## Checking Service Endpoints
+```sh
+kubectl get endpoints
+```
+Example output:
+```sh
+NAME            ENDPOINTS                 AGE
+my-app-service  192.168.1.10:80,192.168.1.11:80,192.168.1.12:80  5m
+```
+
+
 # Q. What is a Headless Service in Kubernetes?
 
 A **Headless Service** in Kubernetes is a type of Service that doesn’t assign a stable IP address or load balance traffic. Instead, it directly exposes the IPs of the individual Pods, allowing clients to connect directly to them. This is useful when you need each pod to be individually discoverable, like in stateful applications (e.g., databases).
