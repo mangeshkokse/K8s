@@ -518,9 +518,7 @@ affinity:
               values:
                 - ssd
 ```
-
-
-## 2)   
+## Types of affinity
 1. ***Node Affinity*** → Control which nodes a pod runs on
 - `Example`:
 - Run this pod only on SSD nodes
