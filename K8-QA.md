@@ -458,9 +458,9 @@ spec:
 
 In this example, instead of creating a single IP for my-headless-service, Kubernetes will return the IPs of all the Pods that match the label app: my-app. This allows clients to interact with the Pods directly.
 
-# Q. Manual Scheduling in Kubernetes
+# Q. Manual Scheduling (Node Selector) in Kubernetes
 
-Manual Scheduling in Kubernetes allows you to specify which node should run a particular pod, rather than relying on the Kubernetes scheduler. You can do this using the `nodeName` field in your pod's YAML file.
+Manual Scheduling (Node selector) in Kubernetes allows you to specify which node should run a particular pod, rather than relying on the Kubernetes scheduler. You can do this using the `nodeName` field in your pod's YAML file.
 
 ## Key Points:
 - **Manual Scheduling** bypasses the Kubernetes scheduler.
@@ -485,7 +485,42 @@ spec:
 # Q. what is pod affinity?
 - Affinity in Kubernetes is used to control pod scheduling based on nodes or other pods. It allows Kubernetes to influence or restrict where pods are placed within the cluster.
 - Pod Affinity is a Kubernetes scheduling concept that allows you to control where pods are placed relative to other pods. It helps group pods together on specific nodes based on labels and topology constraints.
+  
+## 1) Preferred Affinity
+- Preferred affinity rules let you express soft preferences for scheduling Pods onto Nodes
+- It means it will also get scheduled if pods don't find related affinity rules on nodes.
+- `preferredDuringSchedulingIgnoredDuringExecution:`
+```yaml
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+            - key: disktype
+              operator: In
+              values:
+                - SSD
+```
 
+## 2) Required Affinity
+- These are hard rules for scheduling Pods — if they can't be met, the Pod won't be scheduled on a node.
+- Pods must run on nodes matching the specified label selectors.
+- `requiredDuringSchedulingIgnoredDuringExecution:`
+```yaml
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: disktype
+              operator: In
+              values:
+                - ssd
+```
+
+
+## 2)   
 1. ***Node Affinity*** → Control which nodes a pod runs on
 - `Example`:
 - Run this pod only on SSD nodes
