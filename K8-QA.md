@@ -606,7 +606,7 @@ In the pod YAML, a toleration can be specified to allow the pod to be scheduled 
 ## Example:
 **1. Apply a Taint to a Node:**
 ```bash
-kubectl taint nodes <node-name> key=example:NoSchedule
+kubectl taint nodes <node-name> key=value:NoSchedule
 ```
 This adds a taint to the node. Any pod that doesn't have a corresponding toleration will not be scheduled on this node.
 
