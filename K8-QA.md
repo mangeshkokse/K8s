@@ -309,7 +309,7 @@ To update the **Pod template** for an existing **ReplicaSet**, you can't directl
 
 In simple terms, either create a new ReplicaSet with the updated Pod template, or if using a Deployment, modify the Deployment, and it will handle the update process.
 
-# Q. How to Ensuring a Specific Version of Your Application is Maintained by a ReplicaSet
+# Q. How to Ensuring a Specific Version of Your Application is Maintained by a Deployment
 
 To ensure that a specific version of your application is maintained by a **ReplicaSet**, you can specify the image version in the Pod template of the ReplicaSet. This is done by setting the version tag in the container image (e.g., `my-app:v1.0`) when defining the container.
 
